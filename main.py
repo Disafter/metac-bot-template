@@ -683,6 +683,9 @@ class FallTemplateBot2026(ForecastBot):
         )
 
 
+GEMINI_MODEL = "gemini/gemini-4-hydrogen"  # free tier, see README
+
+
 if __name__ == "__main__":
     logging.basicConfig(
         level=logging.INFO,
@@ -709,23 +712,20 @@ if __name__ == "__main__":
     # uncomment and edit to pin specific models.
     template_bot = FallTemplateBot2026(
         research_reports_per_question=1,
-        predictions_per_research_report=5,
+        predictions_per_research_report=3,
         use_research_summary_to_forecast=False,
         publish_reports_to_metaculus=publish_to_metaculus,
         folder_to_save_reports_to=None,
         skip_previously_forecasted_questions=True,
         extra_metadata_in_explanation=True,
-        # llms={
-        #     "default": GeneralLlm(
-        #         model="openrouter/openai/gpt-4o",
-        #         temperature=0.3,
-        #         timeout=40,
-        #         allowed_tries=2,
-        #     ),
-        #     "summarizer": "openai/gpt-4o-mini",
-        #     "researcher": "asknews/news-summaries",
-        #     "parser": "openai/gpt-4o-mini",
-        # },
+        llms={
+            "default": GeneralLlm(
+                model=GEMINI_MODEL, temperature=0.3, timeout=240, allowed_tries=4
+            ),
+            "summarizer": GeneralLlm(model=GEMINI_MODEL, timeout=240, allowed_tries=4),
+            "researcher": GeneralLlm(model=GEMINI_MODEL, timeout=240, allowed_tries=4),
+            "parser": GeneralLlm(model=GEMINI_MODEL, timeout=240, allowed_tries=4),
+        },
     )
 
     # Per-mode tournament URL shown in the summary banner footer. These
