@@ -683,7 +683,8 @@ class FallTemplateBot2026(ForecastBot):
         )
 
 
-GEMINI_MODEL = "gemini/gemini-4-hydrogen"  # free tier, see README
+GEMINI_MODEL = "gemini/gemini-3.5-flash-lite"  # free tier: 15 req/min, 500 req/day
+PARSER_MODEL = "gemini/gemma-4-31b-it"  # free tier: 30 req/min, 14.4k req/day
 
 
 if __name__ == "__main__":
@@ -724,7 +725,7 @@ if __name__ == "__main__":
             ),
             "summarizer": GeneralLlm(model=GEMINI_MODEL, timeout=240, allowed_tries=4),
             "researcher": GeneralLlm(model=GEMINI_MODEL, timeout=240, allowed_tries=4),
-            "parser": GeneralLlm(model=GEMINI_MODEL, timeout=240, allowed_tries=4),
+            "parser": GeneralLlm(model=PARSER_MODEL, timeout=240, allowed_tries=4),
         },
     )
 
